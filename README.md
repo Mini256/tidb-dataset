@@ -1,2 +1,3 @@
 # tidb-dataset
-The dataset import tools for the demo of TiDB.
+
+The dataset import tool for the demo of TiDB.
