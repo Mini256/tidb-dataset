@@ -40,6 +40,9 @@ fmt:
 	@echo "gofmt (simplify)"
 	@gofmt -s -l -w $(FILES) 2>&1 | $(FAIL_ON_STDOUT)
 
+build: tidy
+	$(GOBUILD) -o ./bin/tidb-dataset cmd/*
+
 tidy:
 	@echo "go mod tidy"
 	./tools/check/check-tidy.sh
