@@ -33,7 +33,7 @@ type contextKey string
 const stateKey = contextKey("movie")
 
 type movieState struct {
-	*workload.DatasetState
+	workload.DatasetState
 }
 
 func getMovieState(ctx context.Context) *movieState {
