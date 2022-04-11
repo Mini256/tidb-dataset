@@ -21,7 +21,7 @@ func (t *DatasetState) RefreshConn(ctx context.Context) error {
 }
 
 // NewDatasetState creates a base DatasetState
-func NewDatasetState(ctx context.Context, db *sql.DB) DatasetState {
+func NewDatasetState(ctx context.Context, db *sql.DB) *DatasetState {
 	var conn *sql.Conn
 	var err error
 	if db != nil {
@@ -31,7 +31,7 @@ func NewDatasetState(ctx context.Context, db *sql.DB) DatasetState {
 		}
 	}
 
-	s := DatasetState{
+	s := &DatasetState{
 		DB:   db,
 		Conn: conn,
 	}
