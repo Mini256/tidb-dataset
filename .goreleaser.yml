@@ -8,7 +8,7 @@ before:
 builds:
   - binary: tidb-dataset
     id: tidb-dataset
-    main: ./cmd/main
+    main: ./cmd
     goarch:
       - amd64
     goos:
