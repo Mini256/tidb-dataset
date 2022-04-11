@@ -1,0 +1,26 @@
+---
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - binary: tidb-dataset
+    id: tidb-dataset
+    main: ./cmd/main
+    goarch:
+      - amd64
+    goos:
+      - linux
+      - darwin
+      - windows
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+archives:
+  - files:
+    - none*
+    wrap_in_directory: false
+
+checksum:
+  name_template: 'checksums.txt'
