@@ -2,8 +2,9 @@ package movie
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -11,43 +12,47 @@ const (
 	tableUser          = "user"
 	tableRating        = "rating"
 	tablePerson        = "person"
-	tableMovieType     = "movie_type"
 	tableMovieDirector = "movie_director"
 	tableMovieStar     = "movie_star"
 )
 
 var tableNames = []string{
-	tableMovieStar, tableMovieDirector, tableMovieType, tableRating, tablePerson, tableUser, tableUser,
+	tableMovieStar, tableMovieDirector, tableRating, tablePerson, tableUser, tableUser,
 }
 
 type ddlManager struct {
+	log *logrus.Entry
 }
 
-func newDDLManager() *ddlManager {
-	return &ddlManager{}
+func newDDLManager(log *logrus.Entry) *ddlManager {
+	return &ddlManager{
+		log: log,
+	}
 }
 
-func (w *ddlManager) execTableDDL(ctx context.Context, conn *sql.Conn, query string) error {
-	if _, err := conn.ExecContext(ctx, query); err != nil {
+func (w *ddlManager) execTableDDL(ctx context.Context, query string) error {
+	s := getMovieState(ctx)
+	if _, err := s.Conn.ExecContext(ctx, query); err != nil {
 		return err
 	}
 	return nil
 }
 
 // createTables creates tables schema.
-func (w *ddlManager) createTables(ctx context.Context, conn *sql.Conn) error {
+func (w *ddlManager) createTables(ctx context.Context) error {
 	// Movie.
 	query := `
 		CREATE TABLE IF NOT EXISTS movie (
 			id BIGINT NOT NULL,
 			title VARCHAR(128),
+			type VARCHAR(20),
 			year SMALLINT,
 			released_at DATETIME,
 			PRIMARY KEY (id)
 		)
 	`
-
-	if err := w.execTableDDL(ctx, conn, query); err != nil {
+	w.log.Printf("Creating table %s.\n", tableMovie)
+	if err := w.execTableDDL(ctx, query); err != nil {
 		return err
 	}
 
@@ -60,7 +65,8 @@ func (w *ddlManager) createTables(ctx context.Context, conn *sql.Conn) error {
 		)
 	`
 
-	if err := w.execTableDDL(ctx, conn, query); err != nil {
+	w.log.Printf("Creating table %s.\n", tableUser)
+	if err := w.execTableDDL(ctx, query); err != nil {
 		return err
 	}
 
@@ -75,7 +81,8 @@ func (w *ddlManager) createTables(ctx context.Context, conn *sql.Conn) error {
 		)
 	`
 
-	if err := w.execTableDDL(ctx, conn, query); err != nil {
+	w.log.Printf("Creating table %s.\n", tableRating)
+	if err := w.execTableDDL(ctx, query); err != nil {
 		return err
 	}
 
@@ -84,25 +91,15 @@ func (w *ddlManager) createTables(ctx context.Context, conn *sql.Conn) error {
 		CREATE TABLE IF NOT EXISTS person (
 			id BIGINT NOT NULL,
 			name VARCHAR(128) NOT NULL,
+			gender TINYINT(1),
 			birth_year SMALLINT,
 			death_year SMALLINT,
 			PRIMARY KEY (id)
 		)
 	`
 
-	if err := w.execTableDDL(ctx, conn, query); err != nil {
-		return err
-	}
-
-	// Movie Type.
-	query = `
-		CREATE TABLE IF NOT EXISTS movie_type (
-			movie_id BIGINT NOT NULL,
-			type CHAR(20) NOT NULL
-		)
-	`
-
-	if err := w.execTableDDL(ctx, conn, query); err != nil {
+	w.log.Printf("Creating table %s.\n", tablePerson)
+	if err := w.execTableDDL(ctx, query); err != nil {
 		return err
 	}
 
@@ -115,7 +112,8 @@ func (w *ddlManager) createTables(ctx context.Context, conn *sql.Conn) error {
 		)
 	`
 
-	if err := w.execTableDDL(ctx, conn, query); err != nil {
+	w.log.Printf("Creating table %s.\n", tableMovieDirector)
+	if err := w.execTableDDL(ctx, query); err != nil {
 		return err
 	}
 
@@ -128,22 +126,26 @@ func (w *ddlManager) createTables(ctx context.Context, conn *sql.Conn) error {
 		)
 	`
 
-	if err := w.execTableDDL(ctx, conn, query); err != nil {
+	w.log.Printf("Creating table %s.\n", tableMovieStar)
+	if err := w.execTableDDL(ctx, query); err != nil {
 		return err
 	}
+
+	w.log.Info("Finished creating tables!")
 
 	return nil
 }
 
 // dropTables creates tables schema.
-func (w *ddlManager) dropTables(ctx context.Context, conn *sql.Conn) error {
+func (w *ddlManager) dropTables(ctx context.Context) error {
 	dropTables := []string{
-		tableMovieStar, tableMovieDirector, tableMovieType, tableRating, tablePerson, tableUser, tableUser,
+		tableMovieStar, tableMovieDirector, tableRating, tablePerson, tableUser, tableUser,
 	}
 
-	for _, table := range dropTables {
-		query := fmt.Sprintf("DROP TABLE IF NOT EXISTS %s;", table)
-		if err := w.execTableDDL(ctx, conn, query); err != nil {
+	for _, tableName := range dropTables {
+		query := fmt.Sprintf("DROP TABLE IF EXISTS %s;", tableName)
+		w.log.Printf("Dropping table %s.\n", tableName)
+		if err := w.execTableDDL(ctx, query); err != nil {
 			return err
 		}
 	}

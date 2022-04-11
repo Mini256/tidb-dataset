@@ -19,7 +19,7 @@ func CloseDB(globalDB *sql.DB) {
 	globalDB = nil
 }
 
-func OpenDB(dbName, host string, port int, user, password string, threads, acThreads int) (*sql.DB, error) {
+func OpenDB(dbName, host string, port int, user, password string) (*sql.DB, error) {
 	var (
 		tmpDB *sql.DB
 		err   error
@@ -42,8 +42,6 @@ func OpenDB(dbName, host string, port int, user, password string, threads, acThr
 			globalDB = nil
 			return nil, err
 		}
-	} else {
-		globalDB.SetMaxIdleConns(threads + acThreads + 1)
 	}
 
 	return globalDB, nil

@@ -9,19 +9,16 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	// mysql package
 	"github.com/spf13/cobra"
 )
 
 var (
-	dbName    string
-	host      string
-	port      int
-	user      string
-	password  string
-	threads   int
-	acThreads int
-	driver    string
+	dbName   string
+	host     string
+	port     int
+	user     string
+	password string
+	driver   string
 
 	globalCtx context.Context
 )

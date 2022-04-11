@@ -4,9 +4,7 @@ import (
 	"bytes"
 	"context"
 	"database/sql"
-	"encoding/csv"
 	"fmt"
-	"os"
 	"strings"
 	"time"
 )
@@ -89,34 +87,4 @@ func (b *SQLBatchLoader) Flush(ctx context.Context) error {
 	b.buf.Reset()
 
 	return nil
-}
-
-// CSVBatchLoader helps us insert in batch
-type CSVBatchLoader struct {
-	f      *os.File
-	writer *csv.Writer
-}
-
-// NewCSVBatchLoader creates a batch loader for csv format
-func NewCSVBatchLoader(f *os.File) *CSVBatchLoader {
-	return &CSVBatchLoader{
-		f:      f,
-		writer: csv.NewWriter(f),
-	}
-}
-
-// InsertValue inserts a value, the loader may flush all pending values.
-func (b *CSVBatchLoader) InsertValue(ctx context.Context, columns []string) error {
-	return b.writer.Write(columns)
-}
-
-// Flush inserts all pending values
-func (b *CSVBatchLoader) Flush(ctx context.Context) error {
-	b.writer.Flush()
-	return b.writer.Error()
-}
-
-// Close closes the file.
-func (b *CSVBatchLoader) Close(ctx context.Context) error {
-	return b.f.Close()
 }
