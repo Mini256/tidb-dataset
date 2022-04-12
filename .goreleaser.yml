@@ -20,13 +20,13 @@ builds:
       - windows
     mod_timestamp: '{{ .CommitTimestamp }}'
 
-universal_binaries:
-  - id: tidb-dataset
-
 archives:
   - files:
     - none*
     wrap_in_directory: false
+
+universal_binaries:
+  - replace: true
 
 checksum:
   name_template: 'checksums.txt'
