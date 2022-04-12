@@ -143,7 +143,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 // dropTables creates tables schema.
 func (w *ddlManager) dropTables(ctx context.Context) error {
 	dropTables := []string{
-		tableMovieStar, tableMovieDirector, tableRating, tablePerson, tableUser, tableUser,
+		tableMovieStar, tableMovieDirector, tableRating, tablePerson, tableUser, tableMovie,
 	}
 
 	for _, tableName := range dropTables {
