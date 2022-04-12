@@ -21,7 +21,7 @@ You can download the pre-built binary [here](https://github.com/Mini256/tidb-dat
 ### Build from source
 
 ```bash
-git clone https://github.com/pingcap/go-tpc.git
+git clone https://github.com/Mini256/tidb-dataset.git
 make build
 ```
 
