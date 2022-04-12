@@ -43,12 +43,12 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 	// Movie.
 	query := `
 		CREATE TABLE IF NOT EXISTS movie (
-			id BIGINT NOT NULL,
-			title VARCHAR(128),
-			type VARCHAR(20),
-			year SMALLINT,
-			released_at DATETIME,
-			PRIMARY KEY (id)
+			id bigint(20) NOT NULL,
+			title varchar(100) NOT NULL,
+			type enum('Action','Adventure','Animation','Children''s','Comedy','Crime','Documentary','Drama','Fantasy','Film-Noir','Horror','Musical','Mystery','Romance','Sci-Fi','Thriller','War') NOT NULL,
+			year smallint(6) NOT NULL,
+			release_time datetime NOT NULL,
+			PRIMARY KEY (id) CLUSTERED
 		)
 	`
 	w.log.Printf("Creating table %s.\n", tableMovie)
@@ -59,8 +59,8 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 	// User.
 	query = `
 		CREATE TABLE IF NOT EXISTS user (
-			id BIGINT NOT NULL,
-			username VARCHAR(128) NOT NULL,
+			id bigint NOT NULL,
+			nickname varchar(100) NOT NULL,
 			PRIMARY KEY (id)
 		)
 	`
@@ -73,11 +73,11 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 	// Rating.
 	query = `
 		CREATE TABLE IF NOT EXISTS rating (
-			movie_id BIGINT NOT NULL,
-			user_id BIGINT NOT NULL,
-			score TINYINT NOT NULL,
-			rating_at TIMESTAMP NOT NULL,
-			PRIMARY KEY (movie_id, user_id)
+			movie_id bigint NOT NULL,
+			user_id bigint NOT NULL,
+			score tinyint NOT NULL,
+			rating_at datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+			PRIMARY KEY (movie_id, user_id) CLUSTERED
 		)
 	`
 
@@ -89,12 +89,12 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 	// Person.
 	query = `
 		CREATE TABLE IF NOT EXISTS person (
-			id BIGINT NOT NULL,
-			name VARCHAR(128) NOT NULL,
-			gender TINYINT(1),
-			birth_year SMALLINT,
-			death_year SMALLINT,
-			PRIMARY KEY (id)
+			id bigint(20) NOT NULL,
+			name varchar(100) NOT NULL,
+			gender tinyint(1) DEFAULT NULL,
+			birth_year smallint(6) DEFAULT NULL,
+			death_year smallint(6) DEFAULT NULL,
+			PRIMARY KEY (id) CLUSTERED
 		)
 	`
 
@@ -106,9 +106,9 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 	// Movie Director.
 	query = `
 		CREATE TABLE IF NOT EXISTS movie_director (
-			movie_id BIGINT NOT NULL,
-			director_id BIGINT NOT NULL,
-			PRIMARY KEY (movie_id, director_id)
+			movie_id bigint(20) NOT NULL,
+			director_id bigint(20) NOT NULL,
+			PRIMARY KEY (movie_id,director_id) CLUSTERED
 		)
 	`
 
@@ -120,9 +120,9 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 	// Movie Star.
 	query = `
 		CREATE TABLE IF NOT EXISTS movie_star (
-			movie_id BIGINT NOT NULL,
-			star_id BIGINT NOT NULL,
-			PRIMARY KEY (movie_id, star_id)
+			movie_id bigint(20) NOT NULL,
+			star_id bigint(20) NOT NULL,
+			PRIMARY KEY (movie_id,star_id) CLUSTERED
 		)
 	`
 

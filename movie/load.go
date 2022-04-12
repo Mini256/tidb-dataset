@@ -23,7 +23,7 @@ var movieTypes = []string{
 	"Action",
 	"Adventure",
 	"Animation",
-	"Children",
+	"Children's",
 	"Comedy",
 	"Crime",
 	"Documentary",
@@ -40,7 +40,7 @@ var movieTypes = []string{
 }
 
 func (w *Workloader) loadUsers(ctx context.Context) (util.UInt32, error) {
-	dml := "INSERT INTO user (id, username) VALUES "
+	dml := "INSERT INTO user (id, nickname) VALUES "
 	bl := db.NewSQLBatchLoader(w.db, dml, 3, 10)
 
 	userIDs := make(util.UInt32)
@@ -68,7 +68,7 @@ func (w *Workloader) loadUsers(ctx context.Context) (util.UInt32, error) {
 }
 
 func (w *Workloader) loadMovies(ctx context.Context) (util.UInt32, error) {
-	movieSQL := "INSERT INTO movie (id, title, type, year, released_at) VALUES "
+	movieSQL := "INSERT INTO movie (id, title, type, year, release_time) VALUES "
 	movieBL := db.NewSQLBatchLoader(w.db, movieSQL, 3, 10)
 	movieIDs := make(util.UInt32)
 
