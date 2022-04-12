@@ -41,7 +41,7 @@ For example, if you plan to use the `movie` dataset, you can use the command to 
 tidb-dataset movie prepare
 ```
 
-The tool will import the data into the database named 'test' by default. You can specify it through the following parameters:
+The tool will import the data into the database named `test` by default. You can specify it through the following parameters:
 
 ```
   -D, --db string           Database name (default "test")
@@ -57,5 +57,5 @@ After your test is completed, you can clear the database table generated during 
 tidb-dataset movie cleanup
 ```
 
-If you want to know more usage, please use the 'tidb-dataset --help' command.
+If you want to know more usage, please use the `tidb-dataset --help` command.
 
