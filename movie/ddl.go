@@ -46,7 +46,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 			id bigint(20) NOT NULL,
 			title varchar(100) NOT NULL,
 			type enum(
-				'Action','Adventure','Animation','Children''s','Comedy','Crime',
+				'Action','Adventure','Animation','Children','Comedy','Crime',
 				'Documentary','Drama','Fantasy','Film-Noir','Horror','Musical',
 				'Mystery','Romance','Sci-Fi','Thriller','War'
 			) NOT NULL,

@@ -23,7 +23,7 @@ var movieTypes = []string{
 	"Action",
 	"Adventure",
 	"Animation",
-	"Children's",
+	"Children",
 	"Comedy",
 	"Crime",
 	"Documentary",
@@ -106,7 +106,7 @@ func (w *Workloader) loadMovies(ctx context.Context) (util.UInt32, error) {
 func getMovieTitle(movieType string) string {
 	movieTitle := ""
 	switch movieType {
-	case "Children's":
+	case "Children":
 		movieTitle = "The Story of " + rand.PetName()
 	case "Adventure":
 		movieTitle = "The Adventures of " + rand.Name()
