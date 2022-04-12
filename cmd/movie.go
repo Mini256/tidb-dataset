@@ -79,6 +79,16 @@ func registerMovie(root *cobra.Command) {
 	cmdPrepare.PersistentFlags().UintVar(&cfg.MaxStarsPerMovie, "max-stars-per-movie", 10,
 		"Specify the max number of stars of one movie")
 
+	var cmdCleanUp = &cobra.Command{
+		Use:   "cleanup",
+		Short: "Clean up test data",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			return executeMovie("cleanup")
+		},
+	}
+
 	cmd.AddCommand(cmdPrepare)
+	cmd.AddCommand(cmdCleanUp)
+
 	root.AddCommand(cmd)
 }
