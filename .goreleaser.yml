@@ -18,6 +18,9 @@ builds:
       - linux
       - darwin
       - windows
+    ignore:
+      - goos: windows
+        goarch: arm64
     mod_timestamp: '{{ .CommitTimestamp }}'
 
 archives:
