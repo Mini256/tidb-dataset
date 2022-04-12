@@ -47,7 +47,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 			title varchar(100) NOT NULL,
 			type enum('Action','Adventure','Animation','Children''s','Comedy','Crime','Documentary','Drama','Fantasy','Film-Noir','Horror','Musical','Mystery','Romance','Sci-Fi','Thriller','War') NOT NULL,
 			year smallint(6) NOT NULL,
-			release_time datetime NOT NULL,
+			release_at datetime NOT NULL,
 			PRIMARY KEY (id) CLUSTERED
 		)
 	`

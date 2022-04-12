@@ -68,7 +68,7 @@ func (w *Workloader) loadUsers(ctx context.Context) (util.UInt32, error) {
 }
 
 func (w *Workloader) loadMovies(ctx context.Context) (util.UInt32, error) {
-	movieSQL := "INSERT INTO movie (id, title, type, year, release_time) VALUES "
+	movieSQL := "INSERT INTO movie (id, title, type, year, release_at) VALUES "
 	movieBL := db.NewSQLBatchLoader(w.db, movieSQL, 3, 10)
 	movieIDs := make(util.UInt32)
 
@@ -106,7 +106,7 @@ func (w *Workloader) loadMovies(ctx context.Context) (util.UInt32, error) {
 func getMovieTitle(movieType string) string {
 	movieTitle := ""
 	switch movieType {
-	case "Children":
+	case "Children's":
 		movieTitle = "The Story of " + rand.PetName()
 	case "Adventure":
 		movieTitle = "The Adventures of " + rand.Name()
