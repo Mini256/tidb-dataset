@@ -17,19 +17,12 @@ builds:
     goos:
       - linux
       - darwin
-      - windows
-    ignore:
-      - goos: windows
-        goarch: arm64
     mod_timestamp: '{{ .CommitTimestamp }}'
 
 archives:
   - files:
     - none*
     wrap_in_directory: false
-
-universal_binaries:
-  - replace: true
 
 checksum:
   name_template: 'checksums.txt'
