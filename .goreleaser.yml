@@ -2,20 +2,26 @@
 env:
   - GO111MODULE=on
   - CGO_ENABLED=0
+
 before:
   hooks:
     - go mod tidy
+
 builds:
   - binary: tidb-dataset
     id: tidb-dataset
     main: ./cmd
     goarch:
       - amd64
+      - arm64
     goos:
       - linux
       - darwin
       - windows
     mod_timestamp: '{{ .CommitTimestamp }}'
+
+universal_binaries:
+  - id: tidb-dataset
 
 archives:
   - files:
