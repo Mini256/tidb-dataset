@@ -3,6 +3,7 @@ package movie
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Mini256/tidb-dataset/pkg/db"
@@ -83,9 +84,9 @@ func (w *Workloader) loadMovies(ctx context.Context) (util.UInt32, error) {
 		} else {
 			movieIDs[movieID] = struct{}{}
 		}
-		movieTitle := rand.Verb()
-		movieYear := rand.Year()
 		movieType := rand.RandomString(movieTypes)
+		movieTitle := getMovieTitle(movieType)
+		movieYear := rand.Year()
 		movieReleaseTime := rand.DateRange(
 			time.Date(movieYear, 1, 1, 0, 0, 0, 0, time.UTC),
 			time.Date(movieYear, 12, 31, 0, 0, 0, 0, time.UTC),
@@ -100,6 +101,25 @@ func (w *Workloader) loadMovies(ctx context.Context) (util.UInt32, error) {
 	}
 
 	return movieIDs, movieBL.Flush(ctx)
+}
+
+func getMovieTitle(movieType string) string {
+	movieTitle := ""
+	switch movieType {
+	case "Children":
+		movieTitle = "The Story of " + rand.PetName()
+	case "Adventure":
+		movieTitle = "The Adventures of " + rand.Name()
+	case "Documentary":
+		movieTitle = "The Documentary of " + rand.Animal()
+	case "Sci-Fi":
+		movieTitle = "The Phylogeny of " + rand.Company()
+	case "War":
+		movieTitle = "The Battle of " + rand.City()
+	default:
+		movieTitle = rand.Name()
+	}
+	return strings.ReplaceAll(movieTitle, "'", "\\'")
 }
 
 func (w *Workloader) loadPersons(ctx context.Context) (util.UInt32, error) {
