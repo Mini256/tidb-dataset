@@ -1,3 +1,10 @@
+# IDE Config.
 .idea/
+
+# Binary.
 bin/
 tools/bin/
+tarball/*.tar.gz
+
+# For MacOS.
+.DS_Store
