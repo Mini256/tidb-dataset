@@ -45,7 +45,7 @@ func (w *Workloader) loadUsers(ctx context.Context) (util.UInt32, error) {
 	}
 
 	for len(userIDs) < userCount {
-		userID := rand.Uint32()
+		userID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := userIDs[userID]; ok {
 			continue
 		} else {
@@ -81,7 +81,7 @@ func (w *Workloader) loadBooks(ctx context.Context) (util.UInt32, error) {
 	}
 
 	for len(bookIDs) < bookCount {
-		bookID := rand.Uint32()
+		bookID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := bookIDs[bookID]; ok {
 			continue
 		} else {
@@ -135,12 +135,12 @@ func (w *Workloader) loadAuthors(ctx context.Context) (util.UInt32, error) {
 	}
 
 	for len(authorIDs) < authorCount {
-		id := rand.Uint32()
+		authorID := uint32(rand.UintRange(1000, math.MaxInt))
 
-		if _, exists := authorIDs[id]; exists {
+		if _, exists := authorIDs[authorID]; exists {
 			continue
 		} else {
-			authorIDs[id] = struct{}{}
+			authorIDs[authorID] = struct{}{}
 		}
 
 		name := rand.Name()
@@ -151,9 +151,9 @@ func (w *Workloader) loadAuthors(ctx context.Context) (util.UInt32, error) {
 		var v []string
 		deathYear := birthYear + age
 		if deathYear <= time.Now().Year() {
-			v = append(v, fmt.Sprintf(`(%d, '%s', %d, %d, %d)`, id, name, gender, birthYear, deathYear))
+			v = append(v, fmt.Sprintf(`(%d, '%s', %d, %d, %d)`, authorID, name, gender, birthYear, deathYear))
 		} else {
-			v = append(v, fmt.Sprintf(`(%d, '%s', %d, %d, null)`, id, name, gender, birthYear))
+			v = append(v, fmt.Sprintf(`(%d, '%s', %d, %d, null)`, authorID, name, gender, birthYear))
 		}
 
 		if err := bl.InsertValue(ctx, v); err != nil {
@@ -196,11 +196,11 @@ func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt3
 	}
 
 	for len(orderSet) < orderCount {
-		orderId := uint32(rand.UintRange(1000, math.MaxInt))
-		if _, ok := orderSet[orderId]; ok {
+		orderID := uint32(rand.UintRange(1000, math.MaxInt))
+		if _, ok := orderSet[orderID]; ok {
 			continue
 		} else {
-			orderSet[orderId] = struct{}{}
+			orderSet[orderID] = struct{}{}
 		}
 
 		bookIndex := uint32(rand.IntRange(0, len(bookIDs)-1))
@@ -213,7 +213,7 @@ func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt3
 			time.Now(),
 		)
 
-		v := []string{fmt.Sprintf(`(%d, %d, %d, %d, '%s')`, orderId, bookID, userID, quality, ratedAt.Format(time.RFC3339))}
+		v := []string{fmt.Sprintf(`(%d, %d, %d, %d, '%s')`, orderID, bookID, userID, quality, ratedAt.Format(time.RFC3339))}
 		if err := bl.InsertValue(ctx, v); err != nil {
 			return err
 		}
