@@ -25,7 +25,7 @@ for item in "${matrix[@]}" ; do
     echo "Downloading release v${version} for os $os arch $arch..."
     wget $url -c -q -O $filename
 
-    tiup mirror publish $component_name $version $filename $binary_name --os=$os --arch=$arch --hide --desc="$component_desc"
+    tiup mirror publish $component_name "v${version}" $filename $binary_name --os=$os --arch=$arch --hide --desc="$component_desc"
 done
 
 echo 'Finished!'
