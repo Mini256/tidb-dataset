@@ -4,17 +4,17 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/Mini256/tidb-dataset/movie"
+	"github.com/Mini256/tidb-dataset/bookshop"
 	"github.com/Mini256/tidb-dataset/pkg/db"
 	"github.com/Mini256/tidb-dataset/pkg/workload"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
-var cfg movie.Config
+var cfg bookshop.Config
 
-func executeMovie(action string) error {
-	log := logrus.WithField("dataset", "movie")
+func executeBookshop(action string) error {
+	log := logrus.WithField("dataset", "bookshop")
 
 	var (
 		globalDB *sql.DB
@@ -32,7 +32,7 @@ func executeMovie(action string) error {
 
 	// Init context state for current thread.
 	var w workload.Workloader
-	w, err = movie.NewWorkloader(globalDB, cfg)
+	w, err = bookshop.NewWorkloader(globalDB, cfg)
 	if err != nil {
 		panic(fmt.Errorf("failed to init work loader: %v", err))
 	}
@@ -57,33 +57,32 @@ func executeMovie(action string) error {
 	return nil
 }
 
-func registerMovie(root *cobra.Command) {
+func registerBookshop(root *cobra.Command) {
 	cmd := &cobra.Command{
-		Use:   "movie",
-		Short: "A dataset about movies.",
+		Use:   "bookshop",
+		Short: "A dataset about a virtual online bookshop.",
 	}
 
 	var cmdPrepare = &cobra.Command{
 		Use:   "prepare",
 		Short: "Prepare test data",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return executeMovie("prepare")
+			return executeBookshop("prepare")
 		},
 	}
 
 	cmdPrepare.PersistentFlags().BoolVar(&cfg.DropTables, "drop-tables", false, "Drop the tables before prepare")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.UserCount, "users", 10000, "Specify the number of users")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.PersonCount, "persons", 20000, "Specify the number of persons")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.MovieCount, "movies", 20000, "Specify the number of movies")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.RatingCount, "ratings", 300000, "Specify the number of ratings")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.MaxStarsPerMovie, "max-stars-per-movie", 10,
-		"Specify the max number of stars of one movie")
+	cmdPrepare.PersistentFlags().UintVar(&cfg.UserCount, "users", bookshop.DefaultUserCount, "Specify the number of users")
+	cmdPrepare.PersistentFlags().UintVar(&cfg.AuthorCount, "authors", bookshop.DefaultAuthorCount, "Specify the number of authors")
+	cmdPrepare.PersistentFlags().UintVar(&cfg.BookCount, "books", bookshop.DefaultBookCount, "Specify the number of books")
+	cmdPrepare.PersistentFlags().UintVar(&cfg.OrderCount, "orders", bookshop.DefaultOrderCount, "Specify the number of orders")
+	cmdPrepare.PersistentFlags().UintVar(&cfg.RatingCount, "ratings", bookshop.DefaultRatingCount, "Specify the number of ratings")
 
 	var cmdCleanUp = &cobra.Command{
 		Use:   "cleanup",
 		Short: "Clean up test data",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return executeMovie("cleanup")
+			return executeBookshop("cleanup")
 		},
 	}
 

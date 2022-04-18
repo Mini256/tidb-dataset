@@ -75,5 +75,5 @@ esac
 
 echo "Installed path: ${bold}$bin_dir/tidb-dataset${sgr0}"
 echo "==============================================="
-echo "Have a try:     ${bold}tidb-dataset movie prepare ${sgr0}"
+echo "Have a try:     ${bold}tidb-dataset bookshop prepare ${sgr0}"
 echo "==============================================="

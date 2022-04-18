@@ -1,4 +1,4 @@
-package movie
+package bookshop
 
 import (
 	"context"
@@ -9,18 +9,18 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Config is the configuration for movie demo workload.
+// Config is the configuration for book demo workload.
 type Config struct {
-	DBName           string
-	DropTables       bool
-	UserCount        uint
-	PersonCount      uint
-	MovieCount       uint
-	RatingCount      uint
-	MaxStarsPerMovie uint
+	DBName      string
+	DropTables  bool
+	UserCount   uint
+	AuthorCount uint
+	BookCount   uint
+	OrderCount  uint
+	RatingCount uint
 }
 
-// Workloader is movie demo workload.
+// Workloader is book demo workload.
 type Workloader struct {
 	db         *sql.DB
 	log        *logrus.Entry
@@ -30,14 +30,14 @@ type Workloader struct {
 
 type contextKey string
 
-const stateKey = contextKey("movie")
+const stateKey = contextKey("book")
 
-type movieState struct {
+type bookState struct {
 	*workload.DatasetState
 }
 
-func getMovieState(ctx context.Context) *movieState {
-	s := ctx.Value(stateKey).(*movieState)
+func getBookState(ctx context.Context) *bookState {
+	s := ctx.Value(stateKey).(*bookState)
 	return s
 }
 
@@ -46,7 +46,7 @@ func NewWorkloader(db *sql.DB, cfg Config) (*Workloader, error) {
 		panic(fmt.Errorf("failed to connect to database when loading data"))
 	}
 
-	logger := logrus.WithField("dataset", "movie")
+	logger := logrus.WithField("dataset", "bookshop")
 
 	w := &Workloader{
 		db:         db,
@@ -59,7 +59,7 @@ func NewWorkloader(db *sql.DB, cfg Config) (*Workloader, error) {
 }
 
 func (w *Workloader) Name() string {
-	return "movie"
+	return "bookshop"
 }
 
 func (w *Workloader) DBName() string {
@@ -68,7 +68,7 @@ func (w *Workloader) DBName() string {
 
 // InitThread inits thread.
 func (w *Workloader) InitThread(ctx context.Context) context.Context {
-	s := &movieState{
+	s := &bookState{
 		DatasetState: workload.NewDatasetState(ctx, w.db),
 	}
 	ctx = context.WithValue(ctx, stateKey, s)
@@ -78,7 +78,7 @@ func (w *Workloader) InitThread(ctx context.Context) context.Context {
 
 // CleanupThread implements Workloader interface.
 func (w *Workloader) CleanupThread(ctx context.Context) {
-	s := getMovieState(ctx)
+	s := getBookState(ctx)
 	if s.Conn != nil {
 		err := s.Conn.Close()
 		if err != nil {
@@ -92,7 +92,7 @@ func (w *Workloader) CleanupThread(ctx context.Context) {
 
 // Prepare implements Workloader interface.
 func (w *Workloader) Prepare(ctx context.Context) error {
-	s := getMovieState(ctx)
+	s := getBookState(ctx)
 
 	if w.db == nil || s.Conn == nil {
 		return fmt.Errorf("failed to connect the database")

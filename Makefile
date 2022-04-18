@@ -17,8 +17,8 @@ GOTEST          := $(GO) test
 
 PACKAGE_LIST  := go list ./...
 PACKAGES  := $$($(PACKAGE_LIST))
-PACKAGE_DIRECTORIES := $(PACKAGE_LIST) | sed 's|github.com/Mini256/$(PROJECT)/||'
-FILES     := $$(find $$($(PACKAGE_DIRECTORIES)) -name "*.go")
+PACKAGE_AUTHORIES := $(PACKAGE_LIST) | sed 's|github.com/Mini256/$(PROJECT)/||'
+FILES     := $$(find $$($(PACKAGE_AUTHORIES)) -name "*.go")
 
 
 .PHONY: clean test fmt tidy staticcheck dev check
@@ -48,7 +48,7 @@ tidy:
 	./tools/check/check-tidy.sh
 
 staticcheck: tools/bin/golangci-lint
-	tools/bin/golangci-lint run  $$($(PACKAGE_DIRECTORIES)) --timeout 500s
+	tools/bin/golangci-lint run  $$($(PACKAGE_AUTHORIES)) --timeout 500s
 
 tools/bin/golangci-lint:
 	curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b ./tools/bin v1.45.2

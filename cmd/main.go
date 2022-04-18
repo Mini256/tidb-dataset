@@ -39,7 +39,7 @@ func main() {
 	cobra.EnablePrefixMatching = true
 
 	// Register the dataset modules.
-	registerMovie(rootCmd)
+	registerBookshop(rootCmd)
 
 	var cancel context.CancelFunc
 	globalCtx, cancel = context.WithCancel(context.Background())
