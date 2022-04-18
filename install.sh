@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version=0.0.6
+version=0.0.7
 
 case $(uname -s) in
     Linux|linux) os=linux ;;
