@@ -42,7 +42,7 @@ func (w *ddlManager) execTableDDL(ctx context.Context, query string) error {
 func (w *ddlManager) createTables(ctx context.Context) error {
 	// Books.
 	query := `
-		CREATE TABLE books (
+		CREATE TABLE IF NOT EXISTS books (
 			id bigint(20) NOT NULL,
 			title varchar(100) NOT NULL,
 			type enum('Magazine', 'Novel', 'Life', 'Arts', 'Comics', 'Education & Reference', 
@@ -60,7 +60,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 
 	// Users.
 	query = `
-		CREATE TABLE users (
+		CREATE TABLE IF NOT EXISTS users (
 			id bigint NOT NULL,
 			balance decimal(15,2) DEFAULT '0.0',
 			nickname varchar(100) UNIQUE NOT NULL,
@@ -75,7 +75,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 
 	// Authors.
 	query = `
-		CREATE TABLE authors (
+		CREATE TABLE IF NOT EXISTS authors (
 			id bigint(20) NOT NULL,
 			name varchar(100) NOT NULL,
 			gender tinyint(1) DEFAULT NULL,
@@ -92,7 +92,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 
 	// Book Authors.
 	query = `
-		CREATE TABLE book_authors (
+		CREATE TABLE IF NOT EXISTS book_authors (
 			book_id bigint(20) NOT NULL,
 			author_id bigint(20) NOT NULL,
 			PRIMARY KEY (book_id, author_id) CLUSTERED
@@ -106,7 +106,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 
 	// Orders.
 	query = `
-		CREATE TABLE orders (
+		CREATE TABLE IF NOT EXISTS orders (
 			id bigint(20) NOT NULL,
 			book_id bigint(20) NOT NULL,
 			user_id bigint(20) NOT NULL,
@@ -124,7 +124,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 
 	// Ratings.
 	query = `
-	CREATE TABLE ratings (
+	CREATE TABLE IF NOT EXISTS ratings (
 		book_id bigint NOT NULL,
 		user_id bigint NOT NULL,
 		score tinyint NOT NULL,
