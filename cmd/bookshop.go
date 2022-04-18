@@ -73,15 +73,15 @@ func registerBookshop(root *cobra.Command) {
 
 	cmdPrepare.PersistentFlags().BoolVar(&cfg.DropTables, "drop-tables", false,
 		"Drop the tables before prepare")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.UserCount, "users", bookshop.DefaultUserCount,
+	cmdPrepare.PersistentFlags().IntVar(&cfg.UserCount, "users", bookshop.DefaultUserCount,
 		"Specify the number of users")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.AuthorCount, "authors", bookshop.DefaultAuthorCount,
+	cmdPrepare.PersistentFlags().IntVar(&cfg.AuthorCount, "authors", bookshop.DefaultAuthorCount,
 		"Specify the number of authors")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.BookCount, "books", bookshop.DefaultBookCount,
+	cmdPrepare.PersistentFlags().IntVar(&cfg.BookCount, "books", bookshop.DefaultBookCount,
 		"Specify the number of books")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.OrderCount, "orders", bookshop.DefaultOrderCount,
+	cmdPrepare.PersistentFlags().IntVar(&cfg.OrderCount, "orders", bookshop.DefaultOrderCount,
 		"Specify the number of orders")
-	cmdPrepare.PersistentFlags().UintVar(&cfg.RatingCount, "ratings", bookshop.DefaultRatingCount,
+	cmdPrepare.PersistentFlags().IntVar(&cfg.RatingCount, "ratings", bookshop.DefaultRatingCount,
 		"Specify the number of ratings")
 
 	var cmdCleanUp = &cobra.Command{

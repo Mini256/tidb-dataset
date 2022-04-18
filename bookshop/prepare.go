@@ -43,7 +43,7 @@ func prepareWorkload(ctx context.Context, log *logrus.Entry, l bookLoader) error
 		return fmt.Errorf("failed to load book authors data: %v", err)
 	}
 
-	log.Info("Loading orders data...")
+	log.Info("Loading book orders data...")
 	if err = l.loadOrders(ctx, userIds, bookIds); err != nil {
 		return fmt.Errorf("failed to load orders data: %v", err)
 	}

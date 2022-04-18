@@ -117,7 +117,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`
 
-	w.log.Printf("Creating table %s.\n", tableRatings)
+	w.log.Printf("Creating table %s.\n", tableOrders)
 	if err := w.execTableDDL(ctx, query); err != nil {
 		return err
 	}

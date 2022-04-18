@@ -39,12 +39,8 @@ func (w *Workloader) loadUsers(ctx context.Context) (util.UInt32, error) {
 
 	userIDs := make(util.UInt32)
 	userNicknames := make(util.String)
-	userCount := DefaultUserCount
-	if w.cfg.UserCount != 0 {
-		userCount = int(w.cfg.UserCount)
-	}
 
-	for len(userIDs) < userCount {
+	for w.cfg.UserCount > 0 && len(userIDs) < w.cfg.UserCount {
 		userID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := userIDs[userID]; ok {
 			continue
@@ -75,12 +71,7 @@ func (w *Workloader) loadBooks(ctx context.Context) (util.UInt32, error) {
 	bookBL := db.NewSQLBatchLoader(w.db, bookSQL, 3, 10)
 	bookIDs := make(util.UInt32)
 
-	bookCount := DefaultBookCount
-	if w.cfg.BookCount != 0 {
-		bookCount = int(w.cfg.BookCount)
-	}
-
-	for len(bookIDs) < bookCount {
+	for w.cfg.BookCount > 0 && len(bookIDs) < w.cfg.BookCount {
 		bookID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := bookIDs[bookID]; ok {
 			continue
@@ -129,12 +120,7 @@ func (w *Workloader) loadAuthors(ctx context.Context) (util.UInt32, error) {
 	bl := db.NewSQLBatchLoader(w.db, dml, 3, 10)
 	authorIDs := make(util.UInt32)
 
-	authorCount := DefaultAuthorCount
-	if w.cfg.AuthorCount != 0 {
-		authorCount = int(w.cfg.AuthorCount)
-	}
-
-	for len(authorIDs) < authorCount {
+	for w.cfg.AuthorCount > 0 && len(authorIDs) < w.cfg.AuthorCount {
 		authorID := uint32(rand.UintRange(1000, math.MaxInt))
 
 		if _, exists := authorIDs[authorID]; exists {
@@ -183,6 +169,10 @@ func (w *Workloader) loadBookAuthors(ctx context.Context, bookIDs, authorIds uti
 }
 
 func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt32) error {
+	if len(userIDs) == 0 || len(bookIDs) == 0 {
+		return nil
+	}
+
 	dml := "INSERT INTO orders (id, book_id, user_id, quality, ordered_at) VALUES "
 	bl := db.NewSQLBatchLoader(w.db, dml, 3, 10)
 
@@ -190,12 +180,7 @@ func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt3
 	bookIDArr := util.UInt32Set2Arr(bookIDs)
 
 	orderSet := make(util.UInt32)
-	orderCount := DefaultOrderCount
-	if w.cfg.OrderCount != 0 {
-		orderCount = int(w.cfg.OrderCount)
-	}
-
-	for len(orderSet) < orderCount {
+	for w.cfg.OrderCount > 0 && len(orderSet) < w.cfg.OrderCount {
 		orderID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := orderSet[orderID]; ok {
 			continue
@@ -223,6 +208,10 @@ func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt3
 }
 
 func (w *Workloader) loadRatings(ctx context.Context, userIDs, bookIDs util.UInt32) error {
+	if len(userIDs) == 0 || len(bookIDs) == 0 {
+		return nil
+	}
+
 	dml := "INSERT INTO ratings (book_id, user_id, score, rated_at) VALUES "
 	bl := db.NewSQLBatchLoader(w.db, dml, 3, 10)
 
@@ -230,12 +219,7 @@ func (w *Workloader) loadRatings(ctx context.Context, userIDs, bookIDs util.UInt
 	bookIDArr := util.UInt32Set2Arr(bookIDs)
 
 	ratingSet := make(util.String)
-	ratingCount := DefaultRatingCount
-	if w.cfg.RatingCount != 0 {
-		ratingCount = int(w.cfg.RatingCount)
-	}
-
-	for len(ratingSet) < ratingCount {
+	for w.cfg.RatingCount > 0 && len(ratingSet) < w.cfg.RatingCount {
 		bookIndex := uint32(rand.IntRange(0, len(bookIDs)-1))
 		bookID := bookIDArr[bookIndex]
 		userIndex := uint32(rand.IntRange(0, len(userIDs)-1))

@@ -13,11 +13,11 @@ import (
 type Config struct {
 	DBName      string
 	DropTables  bool
-	UserCount   uint
-	AuthorCount uint
-	BookCount   uint
-	OrderCount  uint
-	RatingCount uint
+	UserCount   int
+	AuthorCount int
+	BookCount   int
+	OrderCount  int
+	RatingCount int
 }
 
 // Workloader is book demo workload.
