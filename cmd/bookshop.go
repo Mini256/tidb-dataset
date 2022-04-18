@@ -11,6 +11,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const DefaultDBName = "bookshop"
+
 var cfg bookshop.Config
 
 func executeBookshop(action string) error {
@@ -22,7 +24,7 @@ func executeBookshop(action string) error {
 	)
 
 	// Init database connection.
-	globalDB, err = db.OpenDB(dbName, host, port, user, password)
+	globalDB, err = db.OpenDB(cfg.DBName, host, port, user, password)
 	if err != nil {
 		db.CloseDB(globalDB)
 		log.WithError(err).Errorf("cannot open database, please check it (ip/port/username/password)")
@@ -62,6 +64,7 @@ func registerBookshop(root *cobra.Command) {
 		Use:   "bookshop",
 		Short: "A dataset about a virtual online bookshop.",
 	}
+	cmd.PersistentFlags().StringVarP(&cfg.DBName, "db", "D", DefaultDBName, "Database name")
 
 	var cmdPrepare = &cobra.Command{
 		Use:   "prepare",

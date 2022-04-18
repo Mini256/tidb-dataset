@@ -13,7 +13,6 @@ import (
 )
 
 var (
-	dbName   string
 	host     string
 	port     int
 	user     string
@@ -29,7 +28,6 @@ func main() {
 		Short: "The example dataset import tool for the demo of TiDB.",
 	}
 
-	rootCmd.PersistentFlags().StringVarP(&dbName, "db", "D", "test", "Database name")
 	rootCmd.PersistentFlags().StringVarP(&host, "host", "H", "127.0.0.1", "Database host")
 	rootCmd.PersistentFlags().StringVarP(&user, "user", "U", "root", "Database user")
 	rootCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "Database password")
