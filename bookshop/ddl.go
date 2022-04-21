@@ -17,7 +17,8 @@ const (
 )
 
 var tableNames = []string{
-	tableBookAuthors, tableRatings, tableAuthors, tableUsers, tableBooks,
+	tableOrders, tableRatings, tableBookAuthors, tableAuthors,
+	tableUsers, tableBooks,
 }
 
 type ddlManager struct {
