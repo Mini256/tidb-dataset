@@ -65,7 +65,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 			id bigint NOT NULL,
 			balance decimal(15,2) DEFAULT '0.0',
 			nickname varchar(100) UNIQUE NOT NULL,
-			PRIMARY KEY (id)
+			PRIMARY KEY (id) NONCLUSTERED
 		) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`
 
