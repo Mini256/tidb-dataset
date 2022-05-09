@@ -2,7 +2,7 @@
 set -e
 
 repo_name="Mini256/tidb-dataset"
-version="0.0.8"
+version="0.0.9"
 binary_name="tidb-dataset"
 component_name="demo"
 component_desc="The dataset import tools for the demo of TiDB"
