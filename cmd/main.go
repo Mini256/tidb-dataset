@@ -38,6 +38,7 @@ func main() {
 
 	// Register the dataset modules.
 	registerBookshop(rootCmd)
+	registerShop(rootCmd)
 
 	var cancel context.CancelFunc
 	globalCtx, cancel = context.WithCancel(context.Background())
