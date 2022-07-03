@@ -89,9 +89,12 @@ func (w *Workloader) loadBooks(ctx context.Context) (util.UInt32, error) {
 		stock := rand.IntRange(10, 1000)
 		price := rand.Float64Range(10, 500)
 
-		v := []string{fmt.Sprintf(`(%d, '%s', '%s', '%s', %d, %f)`,
-			bookID, bookTitle, bookType, bookReleaseTime.Format(MySQLDateTimeValue), stock, price,
-		)}
+		v := []string{
+			fmt.Sprintf(
+				`(%d, '%s', '%s', '%s', %d, %f)`,
+				bookID, bookTitle, bookType, bookReleaseTime.Format(MySQLDateTimeValue), stock, price,
+			),
+		}
 		if err := bookBL.InsertValue(ctx, v); err != nil {
 			return nil, err
 		}
@@ -200,7 +203,10 @@ func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt3
 			time.Now(),
 		)
 
-		v := []string{fmt.Sprintf(`(%d, %d, %d, %d, '%s')`, orderID, bookID, userID, quality, orderedAt.Format(MySQLDateTimeValue))}
+		v := []string{
+			fmt.Sprintf(`(%d, %d, %d, %d, '%s')`,
+				orderID, bookID, userID, quality, orderedAt.Format(MySQLDateTimeValue)),
+		}
 		if err := bl.InsertValue(ctx, v); err != nil {
 			return err
 		}
@@ -240,7 +246,12 @@ func (w *Workloader) loadRatings(ctx context.Context, userIDs, bookIDs util.UInt
 			time.Now(),
 		)
 
-		v := []string{fmt.Sprintf(`(%d, %d, %d, '%s')`, bookID, userID, score, ratedAt.Format(MySQLDateTimeValue))}
+		v := []string{
+			fmt.Sprintf(
+				`(%d, %d, %d, '%s')`,
+				bookID, userID, score, ratedAt.Format(MySQLDateTimeValue),
+			),
+		}
 		if err := bl.InsertValue(ctx, v); err != nil {
 			return err
 		}
