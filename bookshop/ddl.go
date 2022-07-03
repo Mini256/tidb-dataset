@@ -51,7 +51,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 			published_at datetime NOT NULL,
 			stock int(11) DEFAULT '0',
 			price decimal(15,2) DEFAULT '0.0',
-			PRIMARY KEY (id) CLUSTERED
+			PRIMARY KEY (id) /*T![clustered_index] CLUSTERED */
 		) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`
 	w.log.Printf("Creating table %s.\n", tableBooks)
@@ -65,7 +65,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 			id bigint NOT NULL,
 			balance decimal(15,2) DEFAULT '0.0',
 			nickname varchar(100) UNIQUE NOT NULL,
-			PRIMARY KEY (id) NONCLUSTERED
+			PRIMARY KEY (id) /*T![clustered_index] NONCLUSTERED */
 		) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`
 
@@ -82,7 +82,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 			gender tinyint(1) DEFAULT NULL,
 			birth_year smallint(6) DEFAULT NULL,
 			death_year smallint(6) DEFAULT NULL,
-			PRIMARY KEY (id) CLUSTERED
+			PRIMARY KEY (id) /*T![clustered_index] CLUSTERED */
 		) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`
 
@@ -96,7 +96,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 		CREATE TABLE IF NOT EXISTS book_authors (
 			book_id bigint(20) NOT NULL,
 			author_id bigint(20) NOT NULL,
-			PRIMARY KEY (book_id, author_id) CLUSTERED
+			PRIMARY KEY (book_id, author_id) /*T![clustered_index] CLUSTERED */
 		) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`
 
@@ -113,7 +113,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 			user_id bigint(20) NOT NULL,
 			quality tinyint(4) NOT NULL,
 			ordered_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-			PRIMARY KEY (id) CLUSTERED,
+			PRIMARY KEY (id) /*T![clustered_index] CLUSTERED */,
 			KEY orders_book_id_idx (book_id)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`
@@ -130,7 +130,7 @@ func (w *ddlManager) createTables(ctx context.Context) error {
 		user_id bigint NOT NULL,
 		score tinyint NOT NULL,
 		rated_at datetime NOT NULL DEFAULT NOW() ON UPDATE NOW(),
-		PRIMARY KEY (book_id, user_id) CLUSTERED,
+		PRIMARY KEY (book_id, user_id) /*T![clustered_index] CLUSTERED */,
 		UNIQUE KEY uniq_book_user_idx (book_id, user_id)
 	) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 	`

@@ -20,6 +20,8 @@ const (
 	DefaultRatingCount = 300000
 )
 
+const MySQLDateTimeValue = "2006-01-02 03:04:05"
+
 var bookTypes = []string{
 	"Magazine",
 	"Novel",
@@ -88,7 +90,7 @@ func (w *Workloader) loadBooks(ctx context.Context) (util.UInt32, error) {
 		price := rand.Float64Range(10, 500)
 
 		v := []string{fmt.Sprintf(`(%d, '%s', '%s', '%s', %d, %f)`,
-			bookID, bookTitle, bookType, bookReleaseTime.Format(time.RFC3339), stock, price,
+			bookID, bookTitle, bookType, bookReleaseTime.Format(MySQLDateTimeValue), stock, price,
 		)}
 		if err := bookBL.InsertValue(ctx, v); err != nil {
 			return nil, err
@@ -193,12 +195,12 @@ func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt3
 		userIndex := uint32(rand.IntRange(0, len(userIDs)-1))
 		userID := userIDArr[userIndex]
 		quality := rand.IntRange(1, 10)
-		ratedAt := rand.DateRange(
+		orderedAt := rand.DateRange(
 			time.Date(2010, 0, 0, 0, 0, 0, 0, time.UTC),
 			time.Now(),
 		)
 
-		v := []string{fmt.Sprintf(`(%d, %d, %d, %d, '%s')`, orderID, bookID, userID, quality, ratedAt.Format(time.RFC3339))}
+		v := []string{fmt.Sprintf(`(%d, %d, %d, %d, '%s')`, orderID, bookID, userID, quality, orderedAt.Format(MySQLDateTimeValue))}
 		if err := bl.InsertValue(ctx, v); err != nil {
 			return err
 		}
@@ -233,12 +235,12 @@ func (w *Workloader) loadRatings(ctx context.Context, userIDs, bookIDs util.UInt
 		}
 
 		score := rand.IntRange(0, 5)
-		ratingAt := rand.DateRange(
+		ratedAt := rand.DateRange(
 			time.Date(2010, 0, 0, 0, 0, 0, 0, time.UTC),
 			time.Now(),
 		)
 
-		v := []string{fmt.Sprintf(`(%d, %d, %d, '%s')`, bookID, userID, score, ratingAt.String())}
+		v := []string{fmt.Sprintf(`(%d, %d, %d, '%s')`, bookID, userID, score, ratedAt.Format(MySQLDateTimeValue))}
 		if err := bl.InsertValue(ctx, v); err != nil {
 			return err
 		}
