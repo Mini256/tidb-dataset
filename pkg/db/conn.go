@@ -26,14 +26,14 @@ func OpenDB(dbName, host string, port int, user, password string) (*sql.DB, erro
 		ds    = fmt.Sprintf("%s:%s@tcp(%s:%d)/", user, password, host, port)
 	)
 
-	globalDB, err := sql.Open(mysqlDriver, fmt.Sprintf("%s%s", ds, dbName))
+	globalDB, err := sql.Open(mysqlDriver, fmt.Sprintf("%s%s?tls=preferred", ds, dbName))
 	if err != nil {
 		return nil, err
 	}
 	if err := globalDB.Ping(); err != nil {
 		errString := err.Error()
 		if strings.Contains(errString, unknownDB) {
-			tmpDB, _ = sql.Open(mysqlDriver, ds)
+			tmpDB, _ = sql.Open(mysqlDriver, fmt.Sprintf("%s?tls=preferred", ds))
 			defer tmpDB.Close()
 			if _, err := tmpDB.Exec(createDBDDL + dbName); err != nil {
 				return nil, fmt.Errorf("failed to create database, err %v", err)
