@@ -8,6 +8,7 @@ linters:
     - gocyclo
     - gofmt
     - goimports
+    - revive
     - goprintffuncname
     - gosec
     - gosimple

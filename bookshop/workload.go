@@ -124,7 +124,7 @@ func (w *Workloader) Prepare(ctx context.Context) error {
 	return prepareWorkload(ctx, w.log, w)
 }
 
-func (w *Workloader) Run(ctx context.Context) error {
+func (w *Workloader) Run(_ context.Context) error {
 	// TODO implement me
 	panic("implement me")
 }
