@@ -51,5 +51,5 @@ staticcheck: tools/bin/golangci-lint
 	tools/bin/golangci-lint run  $$($(PACKAGE_AUTHORIES)) --timeout 500s
 
 tools/bin/golangci-lint:
-	curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b ./tools/bin v1.45.2
+	curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b ./tools/bin v1.53.0
 

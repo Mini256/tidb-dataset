@@ -46,16 +46,14 @@ func (w *Workloader) loadUsers(ctx context.Context) (util.UInt32, error) {
 		userID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := userIDs[userID]; ok {
 			continue
-		} else {
-			userIDs[userID] = struct{}{}
 		}
+		userIDs[userID] = struct{}{}
 
 		nickname := rand.Username()
 		if _, ok := userNicknames[nickname]; ok {
 			continue
-		} else {
-			userNicknames[nickname] = struct{}{}
 		}
+		userNicknames[nickname] = struct{}{}
 
 		balance := rand.Float64Range(100, 10000)
 
@@ -77,9 +75,9 @@ func (w *Workloader) loadBooks(ctx context.Context) (util.UInt32, error) {
 		bookID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := bookIDs[bookID]; ok {
 			continue
-		} else {
-			bookIDs[bookID] = struct{}{}
 		}
+		bookIDs[bookID] = struct{}{}
+
 		bookType := rand.RandomString(bookTypes)
 		bookTitle := getBookTitle(bookType)
 		bookReleaseTime := rand.DateRange(
@@ -130,9 +128,8 @@ func (w *Workloader) loadAuthors(ctx context.Context) (util.UInt32, error) {
 
 		if _, exists := authorIDs[authorID]; exists {
 			continue
-		} else {
-			authorIDs[authorID] = struct{}{}
 		}
+		authorIDs[authorID] = struct{}{}
 
 		name := rand.Name()
 		gender := rand.IntRange(0, 1) // 0: female, 1: male
@@ -189,9 +186,8 @@ func (w *Workloader) loadOrders(ctx context.Context, userIDs, bookIDs util.UInt3
 		orderID := uint32(rand.UintRange(1000, math.MaxInt))
 		if _, ok := orderSet[orderID]; ok {
 			continue
-		} else {
-			orderSet[orderID] = struct{}{}
 		}
+		orderSet[orderID] = struct{}{}
 
 		bookIndex := uint32(rand.IntRange(0, len(bookIDs)-1))
 		bookID := bookIDArr[bookIndex]
@@ -236,9 +232,8 @@ func (w *Workloader) loadRatings(ctx context.Context, userIDs, bookIDs util.UInt
 		key := fmt.Sprintf("%d-%d", bookID, userID)
 		if _, ok := ratingSet[key]; ok {
 			continue
-		} else {
-			ratingSet[key] = struct{}{}
 		}
+		ratingSet[key] = struct{}{}
 
 		score := rand.IntRange(0, 5)
 		ratedAt := rand.DateRange(
