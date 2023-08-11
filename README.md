@@ -4,9 +4,9 @@ The dataset import tool for the demo of TiDB.
 
 ## Install
 
-You can use one of the three approaches.
+You can use one of the three approaches:
 
-### Install using script (recommend)
+### 1. Install using script (recommend)
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/Mini256/tidb-dataset/main/install.sh | sh
@@ -14,11 +14,11 @@ curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/Mini256/t
 
 And then open a new terminal to try `tidb-dataset`.
 
-### Download binary
+### 2. Download binary
 
 You can download the pre-built binary [here](https://github.com/Mini256/tidb-dataset/releases/latest) and then gunzip it.
 
-### Build from source
+### 3. Build from source
 
 ```bash
 git clone https://github.com/Mini256/tidb-dataset.git
